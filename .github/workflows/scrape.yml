@@ -16,8 +16,4 @@ jobs:
     steps:
       - name: Trigger Vercel Function
         run: |
-          curl -X GET "YOUR_VERCEL_APP_URL/post-single"
-        env:
-          # Use your actual deployed Vercel URL here
-          # The environment variable is not strictly necessary but good practice
-          VERCEL_APP_URL: ${{ secrets.VERCEL_APP_URL }}
+          curl -X GET "https://vigilant-octo-fiesta-five.vercel.app/post-single"
