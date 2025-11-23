@@ -418,7 +418,8 @@ def fetch_past_jobs(company_name, base_url, target_date_str):
 # ==================== SINGLE JOB POSTING ====================
 def post_single_job():
     """Post a single job from a random company"""
-    target_date = datetime.date.today().isoformat()
+    # MODIFIED: Look for jobs posted in the last 3 days instead of just today
+    target_date = (datetime.date.today() - timedelta(days=3)).isoformat()
     logger.info(f"Posting a single job for {target_date}")
     
     # --- ROBUST DUPLICATE CHECKING ---
