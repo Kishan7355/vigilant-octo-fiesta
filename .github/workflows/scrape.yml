@@ -2,18 +2,19 @@ name: Scheduled Job Scraper
 
 on:
   schedule:
-    # Runs every minute between 6:00 AM and 5:59 PM UTC
-    # IMPORTANT: Change '6-17' to '1-12' for Indian Standard Time (IST) if needed
-    # UTC is 5.5 hours behind IST. 6 AM IST = 12:30 AM UTC. 6 PM IST = 12:30 PM UTC.
-    # To run from 6 AM IST to 6 PM IST, the UTC range is approximately 0:30 to 12:30.
-    # The cron format is minute hour day month day-of-week.
-    # This example runs every minute from hour 1 to 12 UTC (6:30 AM to 5:30 PM IST)
-    - cron: '* 1-12 * * *'
+    # Runs every minute between 6:30 AM and 6:30 PM IST (1:00 to 13:00 UTC)
+    - cron: '* 1-13 * * *'
+  workflow_dispatch: # Allows you to trigger it manually from the GitHub UI
 
 jobs:
   run-scraper:
     runs-on: ubuntu-latest
+    timeout-minutes: 5 # Set a timeout for the whole job
     steps:
       - name: Trigger Vercel Function
         run: |
-          curl -X GET "https://vigilant-octo-fiesta-five.vercel.app/post-single"
+          echo "Triggering URL: ${{ secrets.VERCEL_APP_URL }}/post-single"
+          curl --fail --silent --show-error --max-time 120 "${{ secrets.VERCEL_APP_URL }}/post-single"
+        env:
+          # Make sure the secret is set correctly in your repo settings
+          VERCEL_APP_URL: ${{ secrets.VERCEL_APP_URL }}
